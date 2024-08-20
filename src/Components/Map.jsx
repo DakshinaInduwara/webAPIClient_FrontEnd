@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
 import axios from 'axios';
@@ -55,10 +55,12 @@ export const Map = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             <Marker position={[trainLocation.lat, trainLocation.lon]} icon={redIcon}>
-                <Popup>
-                    {trainLocation.location} <br />
-                    {`Lat: ${trainLocation.lat}, Lng: ${trainLocation.lon}`}
-                </Popup>
+                <Tooltip permanent>
+                    <div>
+                        <strong>{trainLocation.location}</strong><br />
+                        Lat: {trainLocation.lat}, Lng: {trainLocation.lon}
+                    </div>
+                </Tooltip>
             </Marker>
         </MapContainer>
     );
