@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
 import axios from 'axios';
@@ -16,6 +16,8 @@ const redIcon = new L.Icon({
 
 export const Map = () => {
     const [trainLocation, setTrainLocation] = useState(null);
+    const [startLocation, setStartLocation] = useState(null);
+    const [path, setPath] = useState([]);
 
     useEffect(() => {
         const fetchTrainLocation = async () => {
@@ -24,21 +26,31 @@ export const Map = () => {
                     `http://localhost:5000/web/train/get/66c4bf46ad7afb106b82296f`
                 );
                 const data = res.data;
-                setTrainLocation({
+
+                const currentLocation = {
                     lat: data.lat,
                     lon: data.lon,
                     location: data.location,
-                });
+                };
+
+                setTrainLocation(currentLocation);
+
+                if (!startLocation) {
+                    setStartLocation(currentLocation);
+                }
+
+                setPath((prevPath) => [...prevPath, [data.lat, data.lon]]);
             } catch (error) {
                 console.error("Error fetching train location: ", error);
             }
         };
+
         fetchTrainLocation();
 
         const intervalId = setInterval(fetchTrainLocation, 60000);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [startLocation]);
 
     if (!trainLocation || !trainLocation.lat || !trainLocation.lon) {
         return <div>Loading train location...</div>;
@@ -54,14 +66,25 @@ export const Map = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
+            {startLocation && (
+                <Marker position={[startLocation.lat, startLocation.lon]} icon={redIcon}>
+                    <Tooltip permanent>
+                        <div>
+                            <strong>Start Location: {startLocation.location}</strong><br />
+                            Lat: {startLocation.lat}, Lng: {startLocation.lon}
+                        </div>
+                    </Tooltip>
+                </Marker>
+            )}
             <Marker position={[trainLocation.lat, trainLocation.lon]} icon={redIcon}>
                 <Tooltip permanent>
                     <div>
-                        <strong>{trainLocation.location}</strong><br />
+                        <strong>Current Location: {trainLocation.location}</strong><br />
                         Lat: {trainLocation.lat}, Lng: {trainLocation.lon}
                     </div>
                 </Tooltip>
             </Marker>
+            <Polyline positions={path} color="blue" />
         </MapContainer>
     );
 };

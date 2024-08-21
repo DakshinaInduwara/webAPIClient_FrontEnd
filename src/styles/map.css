@@ -1,0 +1,13 @@
+/* src/styles/Map.css */
+
+.leaflet-popup-content-wrapper {
+    background: white;
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  .leaflet-popup-tip-container {
+    display: none;
+  }
+  
