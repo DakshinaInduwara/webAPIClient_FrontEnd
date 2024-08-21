@@ -4,10 +4,21 @@ import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
 import axios from 'axios';
 
+// Custom red icon for the markers
 const redIcon = new L.Icon({
     iconUrl: 'data:image/svg+xml;base64,' + btoa(`
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
             <circle cx="50" cy="50" r="40" fill="red" />
+        </svg>
+    `),
+    iconSize: [25, 25],
+    iconAnchor: [12.5, 12.5],
+});
+
+const orangeIcon = new L.Icon({
+    iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+            <circle cx="50" cy="50" r="40" fill="orange" />
         </svg>
     `),
     iconSize: [25, 25],
@@ -67,7 +78,7 @@ export const Map = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             {startLocation && (
-                <Marker position={[startLocation.lat, startLocation.lon]} icon={redIcon}>
+                <Marker position={[startLocation.lat, startLocation.lon]} icon={orangeIcon}>
                     <Tooltip permanent>
                         <div>
                             <strong>Start Location: {startLocation.location}</strong><br />
@@ -84,7 +95,7 @@ export const Map = () => {
                     </div>
                 </Tooltip>
             </Marker>
-            <Polyline positions={path} color="blue" />
+            {path.length > 1 && <Polyline positions={path} color="blue" />}
         </MapContainer>
     );
 };
