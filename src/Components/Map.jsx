@@ -4,7 +4,6 @@ import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
 import axios from 'axios';
 
-// Custom red icon for the markers
 const redIcon = new L.Icon({
     iconUrl: 'data:image/svg+xml;base64,' + btoa(`
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
@@ -24,7 +23,6 @@ const orangeIcon = new L.Icon({
     iconSize: [25, 25],
     iconAnchor: [12.5, 12.5],
 });
-
 export const Map = () => {
     const [trainLocation, setTrainLocation] = useState(null);
     const [startLocation, setStartLocation] = useState(null);
@@ -81,7 +79,7 @@ export const Map = () => {
                 <Marker position={[startLocation.lat, startLocation.lon]} icon={orangeIcon}>
                     <Tooltip permanent>
                         <div>
-                            <strong>Start Location: {startLocation.location}</strong><br />
+                            <strong>Start Point: {startLocation.location}</strong><br />
                             Lat: {startLocation.lat}, Lng: {startLocation.lon}
                         </div>
                     </Tooltip>
@@ -95,30 +93,9 @@ export const Map = () => {
                     </div>
                 </Tooltip>
             </Marker>
-            {path.length > 1 && <Polyline positions={path} color="blue" />}
+            <Polyline positions={path} color="blue" />
         </MapContainer>
     );
 };
-
-const saveStationData = async (stationData) => {
-    try {
-      const response = await axios.post('http://localhost:5000/web/save-station/66c4bf46ad7afb106b82296f', stationData);
-      console.log('Station data saved successfully:', response.data);
-    } catch (error) {
-      console.error('Error saving station data:', error);
-    }
-  };
-  
-  // Example station data
-  const stationData = {
-    stationId: 'station123',
-    name: 'Sample Station',
-    lat: 7.8731,
-    lon: 80.7718,
-    capacity: 100,
-  };
-  
-  // Call the function to save station data
-  saveStationData(stationData);
 
 export default Map;
