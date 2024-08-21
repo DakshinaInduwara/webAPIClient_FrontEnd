@@ -100,4 +100,25 @@ export const Map = () => {
     );
 };
 
+const saveStationData = async (stationData) => {
+    try {
+      const response = await axios.post('http://localhost:5000/web/save-station/66c4bf46ad7afb106b82296f', stationData);
+      console.log('Station data saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving station data:', error);
+    }
+  };
+  
+  // Example station data
+  const stationData = {
+    stationId: 'station123',
+    name: 'Sample Station',
+    lat: 7.8731,
+    lon: 80.7718,
+    capacity: 100,
+  };
+  
+  // Call the function to save station data
+  saveStationData(stationData);
+
 export default Map;
