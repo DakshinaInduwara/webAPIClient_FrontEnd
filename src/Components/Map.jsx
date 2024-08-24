@@ -36,6 +36,7 @@ export const Map = () => {
     lat: 0,
     lon: 0,
     location: "",
+    trainName: "",
     speed: 0,
   });
   const [startLocation, setStartLocation] = useState(null);
@@ -52,6 +53,7 @@ export const Map = () => {
           lat: data.lat,
           lon: data.lon,
           location: data.location,
+          trainName: data.trainName,
           speed: data.speed,
         };
 
@@ -92,7 +94,8 @@ export const Map = () => {
           <Tooltip permanent>
             <div>
               <strong>Start Location: {startLocation.location}</strong><br />
-              Train ID: {id}<br />
+              {/* Train ID: {id}<br /> */}
+              Train Name: {trainLocations.trainName}<br />
               Lat: {startLocation.lat}, Lon: {startLocation.lon}<br />
             </div>
           </Tooltip>
@@ -102,9 +105,10 @@ export const Map = () => {
         <Tooltip permanent>
           <div>
             <strong>Current Location: {trainLocations.location}</strong><br />
-            Train ID: {id}<br />
+            {/* Train ID: {id}<br /> */}
             Lat: {trainLocations.lat}, Lon: {trainLocations.lon}<br />
-            Speed: {trainLocations.speed.toFixed(2)} km/h
+            Train Name: {trainLocations.trainName}<br />
+            Speed: {trainLocations.speed.toFixed(0)} km/h
           </div>
         </Tooltip>
       </Marker>
