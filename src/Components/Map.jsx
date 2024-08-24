@@ -3,10 +3,32 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
+  Tooltip,
+  Polyline,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useParams } from "react-router-dom";
+import L from "leaflet";
+
+const redIcon = new L.Icon({
+  iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+      <circle cx="50" cy="50" r="40" fill="red" />
+    </svg>
+  `),
+  iconSize: [25, 25],
+  iconAnchor: [12.5, 12.5],
+});
+
+const orangeIcon = new L.Icon({
+  iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+      <circle cx="50" cy="50" r="40" fill="orange" />
+    </svg>
+  `),
+  iconSize: [25, 25],
+  iconAnchor: [12.5, 12.5],
+});
 
 export const Map = () => {
   const { id } = useParams();
@@ -16,6 +38,8 @@ export const Map = () => {
     location: "",
     speed: 0,
   });
+  const [startLocation, setStartLocation] = useState(null);
+  const [path, setPath] = useState([]);
 
   useEffect(() => {
     const fetchTrainLocation = async () => {
@@ -24,12 +48,20 @@ export const Map = () => {
           `http://localhost:5000/web/train/get/${id}`
         );
         const data = await res.json();
-        setTrainLocations({
+        const currentLocation = {
           lat: data.lat,
           lon: data.lon,
           location: data.location,
           speed: data.speed,
-        });
+        };
+
+        setTrainLocations(currentLocation);
+
+        if (!startLocation) {
+          setStartLocation(currentLocation);
+        }
+
+        setPath((prevPath) => [...prevPath, [data.lat, data.lon]]);
       } catch (error) {
         console.error("Error fetching train location: ", error);
       }
@@ -39,30 +71,45 @@ export const Map = () => {
     const intervalId = setInterval(fetchTrainLocation, 60000);
 
     return () => clearInterval(intervalId);
-  }, [id]);
+  }, [id, startLocation]);
 
-  // Return null or a loader until the data is fetched
   if (!trainLocations.lat && !trainLocations.lon) {
     return <p>Loading map...</p>;
   }
 
-  console.log(trainLocations)
   return (
     <MapContainer
       center={[trainLocations.lat, trainLocations.lon]}
       zoom={10}
       style={{ height: "100vh", width: "100%" }}
     >
-       <TileLayer
+      <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[trainLocations.lat, trainLocations.lon]}>
-        <Popup>
-          {trainLocations.location} <br />
-          {`Lat: ${trainLocations.lat}, Lon: ${trainLocations.lon}`}
-        </Popup>
+      {startLocation && (
+        <Marker position={[startLocation.lat, startLocation.lon]} icon={orangeIcon}>
+          <Tooltip permanent>
+            <div>
+              <strong>Start Location: {startLocation.location}</strong><br />
+              Train ID: {id}<br />
+              Lat: {startLocation.lat}, Lon: {startLocation.lon}<br />
+              Speed: {startLocation.speed.toFixed(2)} km/h
+            </div>
+          </Tooltip>
+        </Marker>
+      )}
+      <Marker position={[trainLocations.lat, trainLocations.lon]} icon={redIcon}>
+        <Tooltip permanent>
+          <div>
+            <strong>Current Location: {trainLocations.location}</strong><br />
+            Train ID: {id}<br />
+            Lat: {trainLocations.lat}, Lon: {trainLocations.lon}<br />
+            Speed: {trainLocations.speed.toFixed(2)} km/h
+          </div>
+        </Tooltip>
       </Marker>
+      <Polyline positions={path} color="blue" />
     </MapContainer>
   );
 };
