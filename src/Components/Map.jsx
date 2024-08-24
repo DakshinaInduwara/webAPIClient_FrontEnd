@@ -107,7 +107,7 @@ export const Map = () => {
             <strong>Current Location: {trainLocations.location}</strong><br />
             {/* Train ID: {id}<br /> */}
             Lat: {trainLocations.lat}, Lon: {trainLocations.lon}<br />
-            Train Name: {trainLocations.trainName}<br />
+            <strong>Train Name: {trainLocations.trainName}</strong><br />
             Speed: {trainLocations.speed.toFixed(0)} km/h
           </div>
         </Tooltip>
