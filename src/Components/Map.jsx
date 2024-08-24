@@ -1,101 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip, Polyline } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from 'leaflet';
-import axios from 'axios';
+import { useParams } from "react-router-dom";
 
-const redIcon = new L.Icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
-            <circle cx="50" cy="50" r="40" fill="red" />
-        </svg>
-    `),
-    iconSize: [25, 25],
-    iconAnchor: [12.5, 12.5],
-});
-
-const orangeIcon = new L.Icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
-            <circle cx="50" cy="50" r="40" fill="orange" />
-        </svg>
-    `),
-    iconSize: [25, 25],
-    iconAnchor: [12.5, 12.5],
-});
 export const Map = () => {
-    const [trainLocation, setTrainLocation] = useState(null);
-    const [startLocation, setStartLocation] = useState(null);
-    const [path, setPath] = useState([]);
+  const { id } = useParams();
+  const [trainLocations, setTrainLocations] = useState({
+    lat: 0,
+    lon: 0,
+    location: "",
+    speed: 0,
+  });
 
-    useEffect(() => {
-        const fetchTrainLocation = async () => {
-            try {
-                const res = await axios.get(
-                    `http://localhost:5000/web/train/get/66c4bf46ad7afb106b82296f`
-                );
-                const data = res.data;
+  useEffect(() => {
+    const fetchTrainLocation = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/web/train/get/${id}`
+        );
+        const data = await res.json();
+        setTrainLocations({
+          lat: data.lat,
+          lon: data.lon,
+          location: data.location,
+          speed: data.speed,
+        });
+      } catch (error) {
+        console.error("Error fetching train location: ", error);
+      }
+    };
 
-                const currentLocation = {
-                    lat: data.lat,
-                    lon: data.lon,
-                    location: data.location,
-                };
+    fetchTrainLocation();
+    const intervalId = setInterval(fetchTrainLocation, 60000);
 
-                setTrainLocation(currentLocation);
+    return () => clearInterval(intervalId);
+  }, [id]);
 
-                if (!startLocation) {
-                    setStartLocation(currentLocation);
-                }
+  // Return null or a loader until the data is fetched
+  if (!trainLocations.lat && !trainLocations.lon) {
+    return <p>Loading map...</p>;
+  }
 
-                setPath((prevPath) => [...prevPath, [data.lat, data.lon]]);
-            } catch (error) {
-                console.error("Error fetching train location: ", error);
-            }
-        };
-
-        fetchTrainLocation();
-
-        const intervalId = setInterval(fetchTrainLocation, 60000);
-
-        return () => clearInterval(intervalId);
-    }, [startLocation]);
-
-    if (!trainLocation || !trainLocation.lat || !trainLocation.lon) {
-        return <div>Loading train location...</div>;
-    }
-
-    return (
-        <MapContainer
-            center={[trainLocation.lat, trainLocation.lon]}
-            zoom={10}
-            style={{ height: "100vh", width: "100%" }}
-        >
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {startLocation && (
-                <Marker position={[startLocation.lat, startLocation.lon]} icon={orangeIcon}>
-                    <Tooltip permanent>
-                        <div>
-                            <strong>Start Point: {startLocation.location}</strong><br />
-                            Lat: {startLocation.lat}, Lng: {startLocation.lon}
-                        </div>
-                    </Tooltip>
-                </Marker>
-            )}
-            <Marker position={[trainLocation.lat, trainLocation.lon]} icon={redIcon}>
-                <Tooltip permanent>
-                    <div>
-                        <strong>Current Location: {trainLocation.location}</strong><br />
-                        Lat: {trainLocation.lat}, Lng: {trainLocation.lon}
-                    </div>
-                </Tooltip>
-            </Marker>
-            <Polyline positions={path} color="blue" />
-        </MapContainer>
-    );
+  console.log(trainLocations)
+  return (
+    <MapContainer
+      center={[trainLocations.lat, trainLocations.lon]}
+      zoom={10}
+      style={{ height: "100vh", width: "100%" }}
+    >
+       <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      <Marker position={[trainLocations.lat, trainLocations.lon]}>
+        <Popup>
+          {trainLocations.location} <br />
+          {`Lat: ${trainLocations.lat}, Lon: ${trainLocations.lon}`}
+        </Popup>
+      </Marker>
+    </MapContainer>
+  );
 };
 
 export default Map;
