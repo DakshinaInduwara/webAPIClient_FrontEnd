@@ -16,7 +16,7 @@ const redIcon = new L.Icon({
       <circle cx="50" cy="50" r="40" fill="red" />
     </svg>
   `),
-  iconSize: [25, 25],
+  iconSize: [20, 20],
   iconAnchor: [12.5, 12.5],
 });
 
@@ -26,7 +26,7 @@ const orangeIcon = new L.Icon({
       <circle cx="50" cy="50" r="40" fill="orange" />
     </svg>
   `),
-  iconSize: [25, 25],
+  iconSize: [20, 20],
   iconAnchor: [12.5, 12.5],
 });
 
@@ -94,7 +94,6 @@ export const Map = () => {
               <strong>Start Location: {startLocation.location}</strong><br />
               Train ID: {id}<br />
               Lat: {startLocation.lat}, Lon: {startLocation.lon}<br />
-              Speed: {startLocation.speed.toFixed(2)} km/h
             </div>
           </Tooltip>
         </Marker>
