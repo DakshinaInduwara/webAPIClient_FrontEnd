@@ -8,6 +8,8 @@ import History from './Components/History';
 import Services from './Components/Services';
 import Contact from './Components/Contact';
 import Terms from './Components/Terms';
+import Login from './Components/Login';
+import Register from './Components/Register';
 
 function App() {
   return (
@@ -23,6 +25,10 @@ function App() {
           <Route path='/services/' element={<Services />} />
           <Route path='/contact/' element={<Contact />} />
           <Route path='/terms/' element={<Terms />} />
+          <Route path='/login/' element={<Login />} />
+          <Route path='/register/' element={<Register />} />
+          <Route path='/history/' element={<History />} />
+          <Route path='/services/' element={<Services />} />
         </Routes>
       </div>
     </BrowserRouter>
