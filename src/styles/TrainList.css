@@ -1,0 +1,96 @@
+.train-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+  }
+  
+  .train-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 300px;
+    text-align: center;
+  }
+  
+  .train-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .train-details {
+    padding: 15px;
+  }
+  
+  .train-details h3 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .train-details p {
+    font-size: 1rem;
+    color: #777;
+  }
+  
+  .check-location-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .check-location-button:hover {
+    background-color: #0056b3;
+  }
+  .train-list-container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .train-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .train-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .train-image {
+    width: 50px; /* Adjust the size of the image */
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  
+  .check-location-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .check-location-button:hover {
+    background-color: #0056b3;
+  }
+  

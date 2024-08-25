@@ -1,0 +1,44 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .navbar {
+    width: 100%;
+    background-color: navy;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
+  }
+  
+  .navbar-left .train-image {
+    width: 50px;
+    height: auto;
+  }
+  
+  .navbar-right .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar-right .nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .homepage-image-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .homepage-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
