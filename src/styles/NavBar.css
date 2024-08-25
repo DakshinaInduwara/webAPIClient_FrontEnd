@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #1c1c1c;
+    padding: 10px 20px;
+    color: white;
+  }
+  
+  .nav-logo img {
+    height: 50px;
+  }
+  
+  .nav-links a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+  }
+  
+  .nav-auth {
+    display: flex;
+    align-items: center;
+  }
+  
+  .login-btn, .signup-btn {
+    background-color: #e02a2a;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 50px;
+  }
+  
+  .login-btn:hover, .signup-btn:hover {
+    background-color: #860505;
+  }
+  

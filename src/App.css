@@ -1,7 +1,10 @@
+/* General App styling */
 .App {
   text-align: center;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Styling for the logo */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,6 +16,7 @@
   }
 }
 
+/* Styling for the header */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,10 +28,12 @@
   color: white;
 }
 
+/* Styling for links */
 .App-link {
   color: #61dafb;
 }
 
+/* Keyframes for spinning logo */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +41,64 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* New section for integrating the navigation and footer */
+.navbar {
+  background-color: navy;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.navbar img {
+  height: 50px;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar ul li {
+  margin-right: 20px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+.navbar .auth-buttons {
+  display: flex;
+}
+
+.navbar .auth-buttons a {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.navbar .auth-buttons a:hover {
+  background-color: white;
+  color: navy;
+}
+
+.footer {
+  background-color: #282c34;
+  color: white;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }

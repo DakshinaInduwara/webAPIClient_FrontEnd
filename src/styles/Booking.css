@@ -1,0 +1,42 @@
+.booking-section {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    margin-top: -30px;
+  }
+  
+  .booking-form {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .booking-form div {
+    flex: 1 1 200px;
+    margin: 10px;
+  }
+  
+  .booking-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .booking-form select, .booking-form input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .booking-form .captcha {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .booking-form .captcha:hover {
+    background-color: #0056b3;
+  }
+  
