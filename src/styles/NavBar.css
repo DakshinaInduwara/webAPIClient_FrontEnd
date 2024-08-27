@@ -4,24 +4,30 @@
     background-color: #1c1c1c;
     padding: 10px 20px;
     color: white;
-  }
-  
-  .nav-logo img {
+}
+
+.nav-logo img {
     height: 50px;
-  }
-  
-  .nav-links a {
+}
+
+.nav-links a {
     color: white;
     margin: 0 15px;
     text-decoration: none;
-  }
-  
-  .nav-auth {
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+.nav-links a:hover {
+    transform: scale(1.2); 
+    color: red; 
+}
+
+.nav-auth {
     display: flex;
     align-items: center;
-  }
-  
-  .login-btn, .signup-btn {
+}
+
+.login-btn, .signup-btn {
     background-color: #e02a2a;
     color: white;
     border: none;
@@ -29,9 +35,10 @@
     margin-left: 10px;
     cursor: pointer;
     border-radius: 50px;
-  }
-  
-  .login-btn:hover, .signup-btn:hover {
-    background-color: #860505;
-  }
-  
+    transition: transform 0.3s ease, background-color 0.3s ease; 
+}
+
+.login-btn:hover, .signup-btn:hover {
+    transform: scale(1.1); 
+    background-color: red;
+}

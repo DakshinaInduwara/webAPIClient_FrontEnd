@@ -10,6 +10,7 @@ import Contact from './Components/Contact';
 import Terms from './Components/Terms';
 import Login from './Components/Login';
 import Register from './Components/Register';
+import Booking from './Components/Booking';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path='/register/' element={<Register />} />
           <Route path='/history/' element={<History />} />
           <Route path='/services/' element={<Services />} />
+          <Route path='/booking/' element={<Booking />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,4 +1,5 @@
 import React from 'react';
+import NavBar from './NavBar';
 import '../styles/Gallery.css';
 
 const Gallery = () => {
@@ -12,6 +13,8 @@ const Gallery = () => {
     ];
 
     return (
+        <>
+        <NavBar />
         <div className="gallery-container">
             <h2>Gallery</h2>
             <div className="gallery-grid">
@@ -22,6 +25,7 @@ const Gallery = () => {
                 ))}
             </div>
         </div>
+        </>
     );
 };
 

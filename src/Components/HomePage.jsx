@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
-import Booking from './Booking';
 import trainImage from '../Images/HomePage.jpeg';
 import '../styles/HomePage.css';
 
@@ -28,8 +27,6 @@ const HomePage = () => {
           </button>
         </div>
       </div>
-
-      <Booking />
     </div>
   );
 };

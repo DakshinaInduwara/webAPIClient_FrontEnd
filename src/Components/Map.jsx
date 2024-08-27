@@ -9,6 +9,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import { useParams } from "react-router-dom";
 import L from "leaflet";
+import NavBar from './NavBar';
 
 const redIcon = new L.Icon({
   iconUrl: 'data:image/svg+xml;base64,' + btoa(`
@@ -80,6 +81,8 @@ export const Map = () => {
   }
 
   return (
+    <>
+    <NavBar /> 
     <MapContainer
       center={[trainLocations.lat, trainLocations.lon]}
       zoom={10}
@@ -114,6 +117,7 @@ export const Map = () => {
       </Marker>
       <Polyline positions={path} color="blue" />
     </MapContainer>
+    </>
   );
 };
 

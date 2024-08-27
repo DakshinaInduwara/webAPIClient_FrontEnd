@@ -43,6 +43,7 @@ const Login = () => {
             <input
               type="email"
               value={email}
+              placeholder="Enter your Email"
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -52,6 +53,7 @@ const Login = () => {
             <input
               type="password"
               value={password}
+              placeholder="Enter your password atleast 6 charactors"
               onChange={(e) => setPassword(e.target.value)}
               required
             />

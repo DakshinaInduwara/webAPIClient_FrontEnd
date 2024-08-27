@@ -1,42 +1,89 @@
-.booking-section {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+/* Container styles */
+.booking-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f7f7f7; /* Light grey background */
     padding: 20px;
-    margin-top: -30px;
   }
   
+  /* Popup box styles */
+  .booking-popup {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Heading styles */
+  .booking-popup h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Form styles */
   .booking-form {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .booking-form div {
-    flex: 1 1 200px;
-    margin: 10px;
+    flex-direction: column;
+    gap: 15px;
   }
   
   .booking-form label {
-    display: block;
     margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
   }
   
-  .booking-form select, .booking-form input {
+  .booking-form select,
+  .booking-form input[type="date"],
+  .booking-form input[type="number"] {
     width: 100%;
-    padding: 5px;
-    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    color: #333;
+    box-sizing: border-box;
   }
   
-  .booking-form .captcha {
+  /* Checkbox styles */
+  .return-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .return-checkbox label {
+    margin: 0;
+    color: #555;
+  }
+  
+  /* Captcha button styles */
+  .captcha {
     background-color: #007bff;
     color: white;
-    padding: 10px;
     border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
     cursor: pointer;
+    border-radius: 50px;
     width: 100%;
+    transition: background-color 0.3s;
   }
   
-  .booking-form .captcha:hover {
+  .captcha:hover {
     background-color: #0056b3;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .booking-popup {
+      padding: 20px;
+    }
   }
   

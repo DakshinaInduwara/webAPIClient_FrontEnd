@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/Services.css';
+import NavBar from './NavBar';
 
 export const Services = () => {
     const services = [
@@ -12,6 +13,8 @@ export const Services = () => {
     ];
 
     return (
+        <>
+        <NavBar />
         <div className="services-container">
             <h2>Our Services</h2>
             <div className="services-grid">
@@ -23,6 +26,7 @@ export const Services = () => {
                 ))}
             </div>
         </div>
+        </>
     );
 };
 
