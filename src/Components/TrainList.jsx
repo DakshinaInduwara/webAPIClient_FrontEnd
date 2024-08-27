@@ -31,7 +31,8 @@ const TrainList = () => {
         {trains.map((item) => (
           <div className="train-card" key={item._id}>
             <img src={`/path/to/your/train/image/${item.trainId}.png`} alt={item.trainId} className="train-image" />
-            <h3>{item.trainId}</h3>
+            <h3>{item.trainId} <br/>
+            {item.trainName || 'Unknown'}</h3>
             <p>Current Location: {item.location || 'Unknown'}</p>
             <button
               onClick={() => handleNavigate(item._id)}

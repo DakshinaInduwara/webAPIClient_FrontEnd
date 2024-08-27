@@ -1,37 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import NavBar from './NavBar';
 import '../styles/Register.css';
 
-export const Register = () => {
-    return (
-        <div className="register-container">
-            <div className="register-box">
-                <img src="/path/to/logo.png" alt="SL Railway" className="register-logo" />
-                <h2>Create Your Account</h2>
-                <form>
-                    <div className="input-group">
-                        <label htmlFor="username">USERNAME</label>
-                        <input type="text" id="username" placeholder="Enter your username" />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="email">EMAIL</label>
-                        <input type="email" id="email" placeholder="Enter your email" />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="password">PASSWORD</label>
-                        <input type="password" id="password" placeholder="Enter your password" />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="confirm-password">CONFIRM PASSWORD</label>
-                        <input type="password" id="confirm-password" placeholder="Confirm your password" />
-                    </div>
-                    <button type="submit" className="register-button">Sign Up</button>
-                </form>
-                <div className="login-link">
-                    Already have an account? <a href="/login">Login</a>
-                </div>
-            </div>
-        </div>
-    );
-}
+const Register = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  // Define the handleRegister function outside of useEffect
+  const handleRegister = async () => {
+    try {
+      const res = await axios.post('http://localhost:5000/web/user/register', {
+        username,
+        email,
+        password,
+      });
+
+      // Navigate to the login page upon successful registration
+      navigate('/login');
+    } catch (error) {
+      console.error('Failed to register:', error);
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+    }
+  };
+
+  return (
+    <div>
+      <NavBar />
+      <div className="register-container">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleRegister();
+          }}
+          className="register-form"
+        >
+          <h2>Register</h2>
+          {error && <p className="error-message">{error}</p>}
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="register-button">
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default Register;

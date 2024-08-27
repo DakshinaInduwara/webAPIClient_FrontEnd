@@ -1,65 +1,68 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import NavBar from './NavBar';
 import '../styles/Login.css';
 
-export const Login = () => {
-    const [isLogin, setIsLogin] = useState(true);
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-    const toggleForm = () => {
-        setIsLogin(!isLogin);
-    };
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post('http://localhost:5000/web/user/login', {
+        email,
+        password,
+      });
 
-    return (
-        <div className="login-container">
-            <div className="login-box">
-                <img src="/path/to/logo.png" alt="SL Railway" className="login-logo" />
-                <h2>{isLogin ? 'SL Railway Login' : 'SL Railway Sign Up'}</h2>
-                <form>
-                    {!isLogin && (
-                        <div className="input-group">
-                            <label htmlFor="email">EMAIL</label>
-                            <input type="email" id="email" placeholder="Enter your email" />
-                        </div>
-                    )}
-                    <div className="input-group">
-                        <label htmlFor="username">USERNAME</label>
-                        <input type="text" id="username" placeholder="Enter your username" />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="password">PASSWORD</label>
-                        <input type="password" id="password" placeholder="Enter your password" />
-                        <span className="password-toggle"><i className="eye-icon"></i></span>
-                    </div>
-                    {!isLogin && (
-                        <div className="input-group">
-                            <label htmlFor="confirm-password">CONFIRM PASSWORD</label>
-                            <input type="password" id="confirm-password" placeholder="Confirm your password" />
-                        </div>
-                    )}
-                    {isLogin ? (
-                        <>
-                            <div className="forgot-password">
-                                <a href="#">Forgot Password?</a>
-                            </div>
-                            <button type="submit" className="login-button">Login</button>
-                        </>
-                    ) : (
-                        <button type="submit" className="login-button">Sign Up</button>
-                    )}
-                </form>
-                <div className="toggle-form">
-                    {isLogin ? (
-                        <>
-                            Don't you have an account? <a href="#" onClick={toggleForm}>Sign Up</a>
-                        </>
-                    ) : (
-                        <>
-                            Already have an account? <a href="#" onClick={toggleForm}>Login</a>
-                        </>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-}
+      // Navigate to the home page or dashboard upon successful login
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to login:', error);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
+    }
+  };
+
+  return (
+    <div>
+      <NavBar />
+      <div className="login-container">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+          className="login-form"
+        >
+          <h2>Login</h2>
+          {error && <p className="error-message">{error}</p>}
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="login-button">
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default Login;
