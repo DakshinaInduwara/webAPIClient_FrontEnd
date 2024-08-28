@@ -16,14 +16,23 @@ const Login = () => {
         email,
         password,
       });
-
-      // Navigate to the home page or dashboard upon successful login
-      navigate('/');
+  
+      // Access the role from the response
+      const role = res.data.user.role;
+      console.log('role', role);
+  
+      // Navigate based on the user's role
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Failed to login:', error);
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
+  
 
   return (
     <div>

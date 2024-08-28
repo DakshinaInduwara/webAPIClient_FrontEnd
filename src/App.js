@@ -11,6 +11,10 @@ import Terms from './Components/Terms';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Booking from './Components/Booking';
+import Admin from './Components/Admin';
+import AdminFeatures from './Components/AdminFeatures';
+import StationFeatures from './Components/StationFeatures';
+import TrainFeatures from './Components/TrainFeatures';
 
 function App() {
   return (
@@ -31,6 +35,10 @@ function App() {
           <Route path='/history/' element={<History />} />
           <Route path='/services/' element={<Services />} />
           <Route path='/booking/' element={<Booking />} />
+          <Route path='/admin/' element={<Admin />} />
+          <Route path='/adminfeatures/' element={<AdminFeatures />} />
+          <Route path='/stationfeatures/' element={<StationFeatures />} />
+          <Route path='/trainfeatures/' element={<TrainFeatures />} />
         </Routes>
       </div>
     </BrowserRouter>

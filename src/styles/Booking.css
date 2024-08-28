@@ -64,7 +64,7 @@
   }
   
   /* Captcha button styles */
-  .captcha {
+  .submit-btn {
     background-color: #007bff;
     color: white;
     border: none;
@@ -76,7 +76,7 @@
     transition: background-color 0.3s;
   }
   
-  .captcha:hover {
+  .submit-btn:hover {
     background-color: #0056b3;
   }
   

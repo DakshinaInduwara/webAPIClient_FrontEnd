@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
-import trainImage from '../Images/HomePage.jpeg';
+import trainImage from '../Images/HomePage.jpg';
 import '../styles/HomePage.css';
 
 const HomePage = () => {

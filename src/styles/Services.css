@@ -31,7 +31,7 @@
 }
 
 .service-card p {
-    white-space: pre-line; /* To maintain line breaks in details */
+    white-space: pre-line;
     font-size: 16px;
     color: #ddd;
 }

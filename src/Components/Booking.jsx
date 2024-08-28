@@ -48,7 +48,7 @@ export const Booking = () => {
           </label>
         </div>
         <div>
-          <button className="captcha">I'm not a robot</button>
+          <button className="submit-btn">Booking</button>
         </div>
       </div>
     </div>
