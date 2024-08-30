@@ -1,71 +1,66 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"; // If you use axios, otherwise you can remove this line.
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 
 const AdminFeatures = () => {
-  // State for storing users and form data
   const [users, setUsers] = useState([]);
   const [newAdmin, setNewAdmin] = useState({ username: "", email: "", password: "", role: "" });
-  const [updatedUser, setUpdatedUser] = useState({ username: "", email: "" });
+  const [updatedUser, setUpdatedUser] = useState({ id: "", username: "", email: "" });
   const [userToDelete, setUserToDelete] = useState(null);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  // Fetch all users on component mount
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
-
-  // Function to fetch all users
-  const fetchAllUsers = async () => {
+  // Define the fetchAllUsers function inside the component using useCallback
+  const fetchAllUsers = useCallback(async () => {
     try {
-      const response = await axios.get("/api/users"); // Replace with your API endpoint
+      const response = await axios.get(`${backendUrl}/web/user/users`);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users", error);
     }
-  };
+  }, [backendUrl]); // Include backendUrl as a dependency
 
-  // Function to handle adding a new admin
+  useEffect(() => {
+    fetchAllUsers();
+  }, [fetchAllUsers]); // Include fetchAllUsers as a dependency
+
   const handleAddAdmin = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/admins", newAdmin); // Replace with your API endpoint
+      await axios.post(`${backendUrl}/web/user/register`, newAdmin);
       setNewAdmin({ username: "", email: "", password: "", role: "" });
-      fetchAllUsers(); // Refresh users after adding a new admin
+      fetchAllUsers();
     } catch (error) {
       console.error("Error adding admin", error);
     }
   };
 
-  // Function to handle updating a user
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/users/${updatedUser.id}`, updatedUser); // Replace with your API endpoint
-      setUpdatedUser({ username: "", email: "" });
-      fetchAllUsers(); // Refresh users after updating
+      await axios.put(`${backendUrl}/web/user/users${updatedUser.id}`, updatedUser);
+      setUpdatedUser({ id: "", username: "", email: "" });
+      fetchAllUsers();
     } catch (error) {
       console.error("Error updating user", error);
     }
   };
 
-  // Function to handle updating an admin user
   const handleUpdateAdminUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/admins/${updatedUser.id}`, updatedUser); // Replace with your API endpoint
-      setUpdatedUser({ username: "", email: "" });
-      fetchAllUsers(); // Refresh users after updating
+      await axios.put(`${backendUrl}/web/user/admin/users${updatedUser.id}`, updatedUser);
+      setUpdatedUser({ id: "", username: "", email: "" });
+      fetchAllUsers();
     } catch (error) {
       console.error("Error updating admin user", error);
     }
   };
 
-  // Function to handle deleting an admin user
   const handleDeleteAdminUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.delete(`/api/admins/${userToDelete.id}`); // Replace with your API endpoint
+      await axios.delete(`${backendUrl}/web/user/admin/delusers${userToDelete.id}`);
       setUserToDelete(null);
-      fetchAllUsers(); // Refresh users after deletion
+      fetchAllUsers();
     } catch (error) {
       console.error("Error deleting admin user", error);
     }
@@ -74,7 +69,7 @@ const AdminFeatures = () => {
   return (
     <div>
       <h1>Admin Management</h1>
-      
+
       {/* Form to add a new admin */}
       <form onSubmit={handleAddAdmin}>
         <input
@@ -108,7 +103,7 @@ const AdminFeatures = () => {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            {user.username} - {user.email}
+            {user.username} - {user.email} - {user.role}
             <button onClick={() => setUpdatedUser(user)}>Edit</button>
             <button onClick={() => setUserToDelete(user)}>Delete</button>
           </li>
@@ -131,6 +126,32 @@ const AdminFeatures = () => {
         />
         <button type="submit">Update User</button>
       </form>
+
+      {/* Form to update an admin user */}
+      <form onSubmit={handleUpdateAdminUser}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={updatedUser.username}
+          onChange={(e) => setUpdatedUser({ ...updatedUser, username: e.target.value })}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={updatedUser.email}
+          onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+        />
+        <button type="submit">Update Admin</button>
+      </form>
+
+      {/* Form to delete an admin user */}
+      {userToDelete && (
+        <form onSubmit={handleDeleteAdminUser}>
+          <p>Are you sure you want to delete {userToDelete.username}?</p>
+          <button type="submit">Yes, Delete</button>
+          <button type="button" onClick={() => setUserToDelete(null)}>Cancel</button>
+        </form>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -42,12 +42,13 @@ export const Map = () => {
   });
   const [startLocation, setStartLocation] = useState(null);
   const [path, setPath] = useState([]);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchTrainLocation = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/web/train/get/${id}`
+          `${backendUrl}/web/train/get/${id}`
         );
         const data = await res.json();
         const currentLocation = {
@@ -74,7 +75,7 @@ export const Map = () => {
     const intervalId = setInterval(fetchTrainLocation, 60000);
 
     return () => clearInterval(intervalId);
-  }, [id, startLocation]);
+  }, [id, startLocation, backendUrl]); // Include backendUrl in the dependency array
 
   if (!trainLocations.lat && !trainLocations.lon) {
     return <p>Loading map...</p>;
@@ -82,41 +83,41 @@ export const Map = () => {
 
   return (
     <>
-    <NavBar /> 
-    <MapContainer
-      center={[trainLocations.lat, trainLocations.lon]}
-      zoom={10}
-      style={{ height: "100vh", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {startLocation && (
-        <Marker position={[startLocation.lat, startLocation.lon]} icon={orangeIcon}>
+      <NavBar /> 
+      <MapContainer
+        center={[trainLocations.lat, trainLocations.lon]}
+        zoom={10}
+        style={{ height: "100vh", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {startLocation && (
+          <Marker position={[startLocation.lat, startLocation.lon]} icon={orangeIcon}>
+            <Tooltip permanent>
+              <div>
+                <strong>Start Location: {startLocation.location}</strong><br />
+                {/* Train ID: {id}<br /> */}
+                Train Name: {trainLocations.trainName}<br />
+                Lat: {startLocation.lat}, Lon: {startLocation.lon}<br />
+              </div>
+            </Tooltip>
+          </Marker>
+        )}
+        <Marker position={[trainLocations.lat, trainLocations.lon]} icon={redIcon}>
           <Tooltip permanent>
             <div>
-              <strong>Start Location: {startLocation.location}</strong><br />
+              <strong>Current Location: {trainLocations.location}</strong><br />
               {/* Train ID: {id}<br /> */}
-              Train Name: {trainLocations.trainName}<br />
-              Lat: {startLocation.lat}, Lon: {startLocation.lon}<br />
+              Lat: {trainLocations.lat}, Lon: {trainLocations.lon}<br />
+              <strong>Train Name: {trainLocations.trainName}</strong><br />
+              Speed: {trainLocations.speed.toFixed(0)} km/h
             </div>
           </Tooltip>
         </Marker>
-      )}
-      <Marker position={[trainLocations.lat, trainLocations.lon]} icon={redIcon}>
-        <Tooltip permanent>
-          <div>
-            <strong>Current Location: {trainLocations.location}</strong><br />
-            {/* Train ID: {id}<br /> */}
-            Lat: {trainLocations.lat}, Lon: {trainLocations.lon}<br />
-            <strong>Train Name: {trainLocations.trainName}</strong><br />
-            Speed: {trainLocations.speed.toFixed(0)} km/h
-          </div>
-        </Tooltip>
-      </Marker>
-      <Polyline positions={path} color="blue" />
-    </MapContainer>
+        <Polyline positions={path} color="blue" />
+      </MapContainer>
     </>
   );
 };

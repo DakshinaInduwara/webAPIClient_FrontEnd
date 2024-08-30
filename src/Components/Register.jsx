@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import '../styles/Register.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -14,7 +16,7 @@ const Register = () => {
   // Define the handleRegister function outside of useEffect
   const handleRegister = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/web/user/register', {
+      await axios.post(`${backendUrl}/web/user/register`, {
         username,
         email,
         password,

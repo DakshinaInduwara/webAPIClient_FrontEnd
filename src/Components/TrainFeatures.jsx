@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../styles/Admin.css';
 
@@ -6,25 +6,26 @@ const TrainFeatures = () => {
   const [trains, setTrains] = useState([]);
   const [newTrain, setNewTrain] = useState({ trainId: '', trainName: '', location: '', lat: '', lon: '', speed: '', capacity: '' });
   const [updatedTrain, setUpdatedTrain] = useState({ _id: '', trainId: '', trainName: '', location: '', lat: '', lon: '', speed: '', capacity: '' });
-
-  useEffect(() => {
-    fetchTrains();
-  }, []);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   // Fetch all trains
-  const fetchTrains = async () => {
+  const fetchTrains = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/trains');
+      const response = await axios.get(`${backendUrl}/api/trains`);
       setTrains(response.data);
     } catch (error) {
       console.error('Failed to fetch trains:', error);
     }
-  };
+  }, [backendUrl]);
+
+  useEffect(() => {
+    fetchTrains();
+  }, [fetchTrains]);
 
   // Add new train
   const handleAddTrain = async () => {
     try {
-      await axios.post('http://localhost:5000/api/trains', newTrain);
+      await axios.post(`${backendUrl}/api/trains`, newTrain);
       fetchTrains();
     } catch (error) {
       console.error('Failed to add train:', error);
@@ -34,7 +35,7 @@ const TrainFeatures = () => {
   // Update train
   const handleUpdateTrain = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/trains/${updatedTrain._id}`, updatedTrain);
+      await axios.put(`${backendUrl}/api/trains/${updatedTrain._id}`, updatedTrain);
       fetchTrains();
       setUpdatedTrain({ _id: '', trainId: '', trainName: '', location: '', lat: '', lon: '', speed: '', capacity: '' });
     } catch (error) {
@@ -45,7 +46,7 @@ const TrainFeatures = () => {
   // Delete train
   const handleDeleteTrain = async (trainId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/trains/${trainId}`);
+      await axios.delete(`${backendUrl}/api/trains/${trainId}`);
       fetchTrains();
     } catch (error) {
       console.error('Failed to delete train:', error);

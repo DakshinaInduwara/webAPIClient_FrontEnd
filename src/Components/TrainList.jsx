@@ -7,22 +7,24 @@ import '../styles/TrainList.css';
 const TrainList = () => {
   const [trains, setTrains] = useState([]);
   const navigate = useNavigate();
-
-  const handleNavigate = (trainId) => {
-    navigate(`/trainlist/${trainId}`);
-  };
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchAllTrains = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/web/train/get');
+        const res = await axios.get(`${backendUrl}/web/train/get`);
         setTrains(res.data);
       } catch (error) {
         console.error('Failed to fetch trains:', error);
       }
     };
+
     fetchAllTrains();
-  }, []);
+  }, [backendUrl]);  // Include backendUrl as a dependency
+
+  const handleNavigate = (trainId) => {
+    navigate(`/trainlist/${trainId}`);
+  };
 
   return (
     <div>

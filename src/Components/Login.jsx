@@ -9,19 +9,18 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+  
   const handleLogin = async () => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
     try {
-      const res = await axios.post('http://localhost:5000/web/user/login', {
+      const res = await axios.post(`${backendUrl}/web/user/login`, {
         email,
         password,
       });
-  
-      // Access the role from the response
+
       const role = res.data.user.role;
       console.log('role', role);
-  
-      // Navigate based on the user's role
+
       if (role === 'admin') {
         navigate('/admin');
       } else {
@@ -32,7 +31,6 @@ const Login = () => {
       setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
-  
 
   return (
     <div>
@@ -62,7 +60,7 @@ const Login = () => {
             <input
               type="password"
               value={password}
-              placeholder="Enter your password atleast 6 charactors"
+              placeholder="Enter your password at least 6 characters"
               onChange={(e) => setPassword(e.target.value)}
               required
             />
